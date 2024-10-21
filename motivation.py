@@ -4,12 +4,9 @@ import random
 
 
 def show_popup():
-    # List of quotes
+    # List of quotes, you can add as much as you want
     quotes = [
-        "Now I'm feeling motivated. - Vergil",
-        "Nobody makes my fate, but me - Cayde 6",
-        "Bury The light Deep Within",
-        "You're my favorite. Don't ever forget that - Cayde 6"
+        ""
     ]
 
     # Randomly select a quote
