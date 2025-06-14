@@ -32,10 +32,35 @@ def show_random_quote():
     quote = random.choice(quotes) if quotes else "No quotes saved yet. Open the app manually to add some!"
 
     popup = tk.Tk()
-    popup.withdraw()
-    messagebox.showinfo("Your Motivation", quote)
-    popup.destroy()
-    sys.exit(0)  # ✅ Ensures nothing else runs after popup
+    popup.title("Your Motivation")
+    popup.geometry("400x200")
+    popup.configure(bg="#1e2a38")
+
+    # Prevent resizing
+    popup.resizable(False, False)
+
+    # Center the window on screen
+    popup.update_idletasks()
+    w = popup.winfo_screenwidth()
+    h = popup.winfo_screenheight()
+    x = (w // 2) - 200
+    y = (h // 2) - 100
+    popup.geometry(f"+{x}+{y}")
+
+    # Display the quote
+    tk.Label(popup, text="💡 Your Motivation",
+             bg="#1e2a38", fg="#e0e0e0", font=("Segoe UI", 14, "bold")).pack(pady=(20, 5))
+
+    tk.Label(popup, text=quote, wraplength=350,
+             bg="#1e2a38", fg="#e0e0e0", font=("Segoe UI", 11)).pack(pady=5)
+
+    tk.Button(popup, text="OK", command=popup.destroy,
+              font=("Segoe UI", 11, "bold"),
+              bg="#2d82b5", fg="white", activebackground="#246b94",
+              relief="flat", padx=15, pady=6).pack(pady=20)
+
+    popup.mainloop()
+    sys.exit(0)
 
 def open_quote_editor():
     editor = tk.Tk()
