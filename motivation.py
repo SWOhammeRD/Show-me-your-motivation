@@ -10,7 +10,8 @@ QUOTE_FILE = "quotes.json"
 
 # Load quotes from JSON file or create it if missing/corrupted
 def load_quotes():
-    if not os.path.exists(QUOTE_FILE):
+    # If the file doesn't exist or is empty/corrupt, overwrite it
+    if not os.path.exists(QUOTE_FILE) or os.path.getsize(QUOTE_FILE) == 0:
         with open(QUOTE_FILE, 'w') as f:
             json.dump({"quotes": []}, f)
 
@@ -18,12 +19,12 @@ def load_quotes():
         with open(QUOTE_FILE, 'r') as f:
             data = json.load(f)
             return data.get("quotes", [])
-    except json.JSONDecodeError:
-        # If file is corrupt/empty, reset it
+    except (json.JSONDecodeError, ValueError):
+        # If the file exists but contains bad JSON, reset it
         with open(QUOTE_FILE, 'w') as f:
             json.dump({"quotes": []}, f)
         return []
-
+    
 # Save quotes to JSON file (limit to 5)
 def save_quotes(quotes):
     with open(QUOTE_FILE, 'w') as f:
