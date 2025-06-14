@@ -5,51 +5,42 @@ import os
 import random
 import sys
 
-# File to store up to 5 quotes
 QUOTE_FILE = "quotes.json"
 
-# Load quotes from JSON file or create it if missing/corrupted
 def load_quotes():
-    # If the file doesn't exist or is empty/corrupt, overwrite it
     if not os.path.exists(QUOTE_FILE) or os.path.getsize(QUOTE_FILE) == 0:
         with open(QUOTE_FILE, 'w') as f:
             json.dump({"quotes": []}, f)
 
     try:
         with open(QUOTE_FILE, 'r') as f:
-            data = json.load(f)
+            content = f.read().strip()
+            if not content:
+                raise json.JSONDecodeError("Empty content", "", 0)
+            data = json.loads(content)
             return data.get("quotes", [])
     except (json.JSONDecodeError, ValueError):
-        # If the file exists but contains bad JSON, reset it
         with open(QUOTE_FILE, 'w') as f:
             json.dump({"quotes": []}, f)
         return []
-    
-# Save quotes to JSON file (limit to 5)
+
 def save_quotes(quotes):
     with open(QUOTE_FILE, 'w') as f:
         json.dump({"quotes": quotes[:5]}, f)
 
-# Show a random quote in a messagebox
 def show_random_quote():
     quotes = load_quotes()
-    if quotes:
-        quote = random.choice(quotes)
-    else:
-        quote = "No quotes saved yet. Open the app manually to add some!"
+    quote = random.choice(quotes) if quotes else "No quotes saved yet. Open the app manually to add some!"
     root = tk.Tk()
     root.withdraw()
     messagebox.showinfo("Your Motivation", quote)
     root.destroy()
 
-# GUI to manually edit up to 5 quotes
 def open_quote_editor():
     quotes = load_quotes()
-
     editor = tk.Tk()
     editor.title("Edit Your Quotes (Max 5)")
     editor.geometry("500x300")
-
     entries = []
 
     def save_and_close():
@@ -70,7 +61,6 @@ def open_quote_editor():
 
     editor.mainloop()
 
-# Entry point
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "--popup":
         show_random_quote()
