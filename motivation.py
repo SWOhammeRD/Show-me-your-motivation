@@ -8,14 +8,21 @@ import sys
 # File to store up to 5 quotes
 QUOTE_FILE = "quotes.json"
 
-# Load quotes from JSON file or create it if missing
+# Load quotes from JSON file or create it if missing/corrupted
 def load_quotes():
     if not os.path.exists(QUOTE_FILE):
         with open(QUOTE_FILE, 'w') as f:
             json.dump({"quotes": []}, f)
-    with open(QUOTE_FILE, 'r') as f:
-        data = json.load(f)
-    return data.get("quotes", [])
+
+    try:
+        with open(QUOTE_FILE, 'r') as f:
+            data = json.load(f)
+            return data.get("quotes", [])
+    except json.JSONDecodeError:
+        # If file is corrupt/empty, reset it
+        with open(QUOTE_FILE, 'w') as f:
+            json.dump({"quotes": []}, f)
+        return []
 
 # Save quotes to JSON file (limit to 5)
 def save_quotes(quotes):
@@ -28,7 +35,7 @@ def show_random_quote():
     if quotes:
         quote = random.choice(quotes)
     else:
-        quote = "No quotes saved yet. Please open the app manually to add some!"
+        quote = "No quotes saved yet. Open the app manually to add some!"
     root = tk.Tk()
     root.withdraw()
     messagebox.showinfo("Your Motivation", quote)
