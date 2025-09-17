@@ -35,11 +35,6 @@ Windows
 Press Win + R, type shell:startup, and hit Enter.
 Move your shortcut into that folder.
 
-Mac
-1. Install PyInstaller "pyinstaller --onefile motivation.py" or
-   "pyinstaller --onefile --name "MotivationApp" motivation.py"
-2. Open System Settings > Users & Groups > Login Items.
-2.1 Add the built app or a script that runs: (python3 /path/to/motivation.py --popup)
 
 Linux 
 1. pyinstaller --onefile motivation.py
