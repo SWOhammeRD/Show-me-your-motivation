@@ -13,7 +13,7 @@ Features
 Notes
 
 You can run the script directly with Python, or build it into a standalone executable for sharing.
-On Windows/macOS, you can use system startup folders or login items to launch the app on boot.
+On Windows, you can use system startup folders or login items to launch the app on boot.
 On Linux, use a .desktop file in your autostart config.
 
 How to use:
